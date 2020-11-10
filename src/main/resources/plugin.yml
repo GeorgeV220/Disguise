@@ -1,0 +1,19 @@
+name: Disguise
+version: ${project.version}
+main: com.georgev22.disguise.Main
+depend:
+  - Vault
+softdepend:
+  - NameTagEdit
+authors:
+  - _UnLo
+  - 2sb
+  - GeorgeV22
+commands:
+  disguise:
+    usage: /<command>
+    description: disguise command
+    aliases: [ changename, nicker ]
+  skin:
+    usage: /<command>
+    description: Set skin

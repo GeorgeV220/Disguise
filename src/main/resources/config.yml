@@ -1,0 +1,24 @@
+options:
+  hooks:
+    NameTagEdit: true
+  prefix: "&e&lDisguise &8» &e"
+  random: true
+  cooldown:
+    disguise: 500
+    skin: 150
+  defaultRank: default
+  defaultTag: "&7"
+  randomRanks:
+    MVP:
+      tag: "&9"
+      chat: "&8[&9MVP&8] &r"
+    VIP:
+      tag: "&a"
+      chat: "&8[&aVIP] &r"
+  disabledNames:
+    - GeorgeV22
+    - 2sb
+    - _UnLo
+    - 0ph
+    - DoNot_TrustMe
+    - Detay
