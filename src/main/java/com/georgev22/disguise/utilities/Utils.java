@@ -475,7 +475,7 @@ public final class Utils {
         return copy;
     }
 
-    public static String convertItemStackToJson(ItemStack itemStack) {
+    public static String convertItemStackToJson(ItemStack itemStack) throws Exception {
 
         Class<?> craftItemStackClazz = ReflectionUtil.getOBCClass("inventory.CraftItemStack");
         Method asNMSCopyMethod = ReflectionUtil.getMethod(craftItemStackClazz, "asNMSCopy", ItemStack.class);
@@ -500,7 +500,7 @@ public final class Utils {
         return itemAsJsonObject.toString();
     }
 
-    public static void sendItemTooltipMessage(Player player, String message, String text, ItemStack item) {
+    public static void sendItemTooltipMessage(Player player, String message, String text, ItemStack item) throws Exception {
         String itemJson = convertItemStackToJson(item);
 
         BaseComponent[] hoverEventComponents = new BaseComponent[]{new TextComponent(itemJson)};

@@ -3,14 +3,14 @@ package com.georgev22.disguise.handler.handlers;
 import com.georgev22.disguise.Main;
 import com.georgev22.disguise.utilities.Utils;
 import com.georgev22.disguise.handler.SkinHandler;
-import com.georgev22.disguise.handler.SkinUtils;
+import com.georgev22.disguise.utilities.SkinUtils;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import com.mojang.authlib.properties.Property;
 import com.mojang.authlib.properties.PropertyMap;
-import net.minecraft.server.v1_12_R1.*;
+import net.minecraft.server.v1_11_R1.*;
 import org.bukkit.Bukkit;
-import org.bukkit.craftbukkit.v1_12_R1.entity.CraftPlayer;
+import org.bukkit.craftbukkit.v1_11_R1.entity.CraftPlayer;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
 
@@ -23,7 +23,7 @@ import java.util.Collections;
 /**
  * @author GeorgeV22
  */
-public class SkinHandler1_12_R1 implements SkinHandler {
+public class SkinHandler_v1_11_R1 implements SkinHandler {
 
     @Override
     public void updateSkin(Player player) {
@@ -35,11 +35,12 @@ public class SkinHandler1_12_R1 implements SkinHandler {
         PacketPlayOutPlayerInfo addInfo = new PacketPlayOutPlayerInfo(
                 PacketPlayOutPlayerInfo.EnumPlayerInfoAction.ADD_PLAYER, ep);
 
-        WorldServer world = (WorldServer) ep.getWorld();
-        EnumDifficulty difficulty = world.getDifficulty();
-        WorldType worldType = world.worldData.getType();
+        WorldServer worldServer = (WorldServer) ep.getWorld();
+        int dimension = worldServer.worldProvider.getDimensionManager().getDimensionID();
+        EnumDifficulty difficulty = EnumDifficulty.getById(cp.getWorld().getDifficulty().getValue());
+        WorldType worldType = worldServer.getWorldData().getType();
 
-        PacketPlayOutRespawn respawn = new PacketPlayOutRespawn(world.dimension, difficulty, worldType, ep.playerInteractManager.getGameMode());
+        PacketPlayOutRespawn respawn = new PacketPlayOutRespawn(dimension, difficulty, worldType, ep.playerInteractManager.getGameMode());
         PacketPlayOutPosition position = new PacketPlayOutPosition(
                 player.getLocation().getX(),
                 player.getLocation().getY(),

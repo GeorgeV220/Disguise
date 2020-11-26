@@ -3,7 +3,7 @@ package com.georgev22.disguise.manager;
 import com.georgev22.disguise.Main;
 import com.georgev22.disguise.utilities.Utils;
 import com.georgev22.disguise.events.DisguiseEvent;
-import com.georgev22.disguise.handler.SkinUtils;
+import com.georgev22.disguise.utilities.SkinUtils;
 import net.milkbowl.vault.chat.Chat;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;

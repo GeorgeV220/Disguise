@@ -3,15 +3,14 @@ package com.georgev22.disguise.handler.handlers;
 import com.georgev22.disguise.Main;
 import com.georgev22.disguise.utilities.Utils;
 import com.georgev22.disguise.handler.SkinHandler;
-import com.georgev22.disguise.handler.SkinUtils;
+import com.georgev22.disguise.utilities.SkinUtils;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import com.mojang.authlib.properties.Property;
 import com.mojang.authlib.properties.PropertyMap;
-import net.minecraft.server.v1_8_R3.*;
+import net.minecraft.server.v1_14_R1.*;
 import org.bukkit.Bukkit;
-import org.bukkit.Location;
-import org.bukkit.craftbukkit.v1_8_R3.entity.CraftPlayer;
+import org.bukkit.craftbukkit.v1_14_R1.entity.CraftPlayer;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
 
@@ -20,10 +19,11 @@ import java.io.InputStreamReader;
 import java.net.URL;
 import java.util.Collections;
 
+
 /**
  * @author GeorgeV22
  */
-public class SkinHandler1_8 implements SkinHandler {
+public class SkinHandler_v1_14_R1 implements SkinHandler {
 
     @Override
     public void updateSkin(Player player) {
@@ -35,22 +35,28 @@ public class SkinHandler1_8 implements SkinHandler {
         PacketPlayOutPlayerInfo addInfo = new PacketPlayOutPlayerInfo(
                 PacketPlayOutPlayerInfo.EnumPlayerInfoAction.ADD_PLAYER, ep);
 
-        WorldServer world = (WorldServer) ep.getWorld();
-        EnumDifficulty difficulty = world.getDifficulty();
-        WorldType worldType = world.worldData.getType();
+        WorldServer worldServer = ep.getWorldServer();
+        DimensionManager dm = worldServer.worldProvider.getDimensionManager();
+        WorldType worldType = worldServer.worldData.getType();
 
-        PacketPlayOutRespawn respawn = new PacketPlayOutRespawn(world.dimension, difficulty, worldType, ep.playerInteractManager.getGameMode());
+        PacketPlayOutRespawn respawn = new PacketPlayOutRespawn(dm, worldType, ep.playerInteractManager.getGameMode());
         PacketPlayOutPosition position = new PacketPlayOutPosition(
                 player.getLocation().getX(),
                 player.getLocation().getY(),
                 player.getLocation().getZ(),
                 player.getLocation().getYaw(),
                 player.getLocation().getPitch(),
-                Collections.emptySet()
+                Collections.emptySet(),
+                0
         );
         PacketPlayOutHeldItemSlot slot = new PacketPlayOutHeldItemSlot(player.getInventory().getHeldItemSlot());
 
-        Bukkit.getServer().getScheduler().runTask(Main.getInstance(), () -> {
+        DataWatcher watcher = ep.getDataWatcher();
+        watcher.set(DataWatcherRegistry.a.a(15), (byte) 127);
+
+        PacketPlayOutEntityMetadata metadata = new PacketPlayOutEntityMetadata(ep.getId(), watcher, false);
+
+        Bukkit.getScheduler().runTask(Main.getInstance(), () -> {
             for (Player p : Bukkit.getOnlinePlayers()) {
                 p.hidePlayer(player);
                 p.showPlayer(player);
@@ -58,6 +64,7 @@ public class SkinHandler1_8 implements SkinHandler {
 
             ep.playerConnection.sendPacket(removeInfo);
             ep.playerConnection.sendPacket(addInfo);
+            ep.playerConnection.sendPacket(metadata);
             ep.playerConnection.sendPacket(respawn);
             ep.playerConnection.sendPacket(position);
             ep.playerConnection.sendPacket(slot);
@@ -65,18 +72,6 @@ public class SkinHandler1_8 implements SkinHandler {
             ep.updateAbilities();
             SkinUtils.updateData(player);
         });
-    }
-
-    public void reloadSkin(Player player) {
-        final EntityPlayer ep = ((CraftPlayer) player).getHandle();
-        final PacketPlayOutPlayerInfo removeInfo = new PacketPlayOutPlayerInfo(PacketPlayOutPlayerInfo.EnumPlayerInfoAction.REMOVE_PLAYER, ep);
-        final PacketPlayOutPlayerInfo addInfo = new PacketPlayOutPlayerInfo(PacketPlayOutPlayerInfo.EnumPlayerInfoAction.ADD_PLAYER, ep);
-        final Location loc = player.getLocation().clone();
-        ep.playerConnection.sendPacket(removeInfo);
-        ep.playerConnection.sendPacket(addInfo);
-        player.teleport(loc);
-        ep.playerConnection.sendPacket(new PacketPlayOutRespawn(ep.dimension, ep.getWorld().getDifficulty(), ep.getWorld().getWorldData().getType(), ep.playerInteractManager.getGameMode()));
-        player.updateInventory();
     }
 
     @Override

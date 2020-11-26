@@ -2,12 +2,14 @@ package com.georgev22.disguise.commands;
 
 import com.georgev22.disguise.Cooldown;
 import com.georgev22.disguise.Main;
-import com.georgev22.disguise.utilities.Utils;
-import com.georgev22.disguise.handler.SkinUtils;
+import com.georgev22.disguise.events.SkinEvent;
+import com.georgev22.disguise.utilities.SkinUtils;
 import com.georgev22.disguise.manager.SkinManager;
 import com.georgev22.disguise.manager.SkinUser;
 import com.georgev22.disguise.utilities.MessagesUtil;
+import com.georgev22.disguise.utilities.Utils;
 import com.google.common.collect.Maps;
+import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -63,6 +65,7 @@ public class Skin implements CommandExecutor {
             if (Cooldown.isInCooldown(player.getUniqueId(), "skinSet")) {
                 skinUser.setNewSkin(args[1]);
                 SkinUtils.changeSkinAsync(player, args[1]);
+                Bukkit.getServer().getPluginManager().callEvent(new SkinEvent(player, skinUser.getNewSkin(), false));
 
                 placeholders.put("%name%", args[1]);
 
@@ -79,7 +82,7 @@ public class Skin implements CommandExecutor {
             placeholders.clear();
             return true;
         } else if (args[0].equalsIgnoreCase("reset")) {
-            if (!sender.hasPermission("skins.update")) {
+            if (!sender.hasPermission("skins.reset")) {
                 MessagesUtil.NO_PERMISSION.msg(sender);
                 return true;
             }
@@ -92,6 +95,7 @@ public class Skin implements CommandExecutor {
                 SkinManager.getSkinManager().getMap().put(player.getUniqueId(), skinUser);
             }
             skinUser.setNewSkin(player.getName());
+            Bukkit.getServer().getPluginManager().callEvent(new SkinEvent(player, skinUser.getNewSkin(), false));
             SkinUtils.changeSkinAsync(player, skinUser.getOldSkin());
 
             MessagesUtil.SKIN_RESET.msg(sender);
@@ -110,7 +114,7 @@ public class Skin implements CommandExecutor {
             }
             skinUser.setNewSkin(player.getName());
             SkinUtils.changeSkinAsync(player, skinUser.getNewSkin());
-
+            Bukkit.getServer().getPluginManager().callEvent(new SkinEvent(player, skinUser.getNewSkin(), true));
             MessagesUtil.SKIN_UPDATE.msg(sender);
         }
 

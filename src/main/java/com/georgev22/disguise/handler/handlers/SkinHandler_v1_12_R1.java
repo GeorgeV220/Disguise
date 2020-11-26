@@ -3,14 +3,14 @@ package com.georgev22.disguise.handler.handlers;
 import com.georgev22.disguise.Main;
 import com.georgev22.disguise.utilities.Utils;
 import com.georgev22.disguise.handler.SkinHandler;
-import com.georgev22.disguise.handler.SkinUtils;
+import com.georgev22.disguise.utilities.SkinUtils;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import com.mojang.authlib.properties.Property;
 import com.mojang.authlib.properties.PropertyMap;
-import net.minecraft.server.v1_9_R1.*;
+import net.minecraft.server.v1_12_R1.*;
 import org.bukkit.Bukkit;
-import org.bukkit.craftbukkit.v1_9_R1.entity.CraftPlayer;
+import org.bukkit.craftbukkit.v1_12_R1.entity.CraftPlayer;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
 
@@ -19,10 +19,11 @@ import java.io.InputStreamReader;
 import java.net.URL;
 import java.util.Collections;
 
+
 /**
  * @author GeorgeV22
  */
-public class SkinHandler1_9_R1 implements SkinHandler {
+public class SkinHandler_v1_12_R1 implements SkinHandler {
 
     @Override
     public void updateSkin(Player player) {
@@ -34,12 +35,11 @@ public class SkinHandler1_9_R1 implements SkinHandler {
         PacketPlayOutPlayerInfo addInfo = new PacketPlayOutPlayerInfo(
                 PacketPlayOutPlayerInfo.EnumPlayerInfoAction.ADD_PLAYER, ep);
 
-        WorldServer worldServer = ((WorldServer) ep.getWorld());
-        int dimension = worldServer.worldProvider.getDimensionManager().getDimensionID();
-        EnumDifficulty difficulty = EnumDifficulty.getById(cp.getWorld().getDifficulty().getValue());
-        WorldType worldType = worldServer.getWorldData().getType();
+        WorldServer world = (WorldServer) ep.getWorld();
+        EnumDifficulty difficulty = world.getDifficulty();
+        WorldType worldType = world.worldData.getType();
 
-        PacketPlayOutRespawn respawn = new PacketPlayOutRespawn(dimension, difficulty, worldType, ep.playerInteractManager.getGameMode());
+        PacketPlayOutRespawn respawn = new PacketPlayOutRespawn(world.dimension, difficulty, worldType, ep.playerInteractManager.getGameMode());
         PacketPlayOutPosition position = new PacketPlayOutPosition(
                 player.getLocation().getX(),
                 player.getLocation().getY(),
@@ -51,7 +51,7 @@ public class SkinHandler1_9_R1 implements SkinHandler {
         );
         PacketPlayOutHeldItemSlot slot = new PacketPlayOutHeldItemSlot(player.getInventory().getHeldItemSlot());
 
-        Bukkit.getServer().getScheduler().runTask(Main.getInstance(), () -> {
+        Bukkit.getScheduler().runTask(Main.getInstance(), () -> {
             for (Player p : Bukkit.getOnlinePlayers()) {
                 p.hidePlayer(player);
                 p.showPlayer(player);
@@ -66,6 +66,7 @@ public class SkinHandler1_9_R1 implements SkinHandler {
             ep.updateAbilities();
             SkinUtils.updateData(player);
         });
+
     }
 
     @Override

@@ -33,6 +33,9 @@
     <orderEntry type="library" scope="PROVIDED" name="Maven: com.nametagedit:nametagedit:4.1.0" level="project" />
     <orderEntry type="library" scope="PROVIDED" name="Maven: com.github.MilkBowl:VaultAPI:1.7" level="project" />
     <orderEntry type="library" scope="PROVIDED" name="Maven: org.bukkit:bukkit:1.13.1-R0.1-SNAPSHOT" level="project" />
+    <orderEntry type="library" scope="PROVIDED" name="Maven: com.comphenix.protocol:ProtocolLib:4.5.0" level="project" />
+    <orderEntry type="library" scope="PROVIDED" name="Maven: cglib:cglib-nodep:3.2.5" level="project" />
+    <orderEntry type="library" scope="PROVIDED" name="Maven: com.comphenix.executors:BukkitExecutors:1.1-SNAPSHOT" level="project" />
     <orderEntry type="module-library">
       <library name="Maven: net.minecraft.server:v1_8_R3:1.0">
         <CLASSES>
@@ -136,6 +139,15 @@
       <library name="Maven: net.minecraft.server:v1_16_R2:1.0">
         <CLASSES>
           <root url="jar://$MODULE_DIR$/libs/spigot-1.16.3.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library name="Maven: net.minecraft.server:v1_16_R3:1.0">
+        <CLASSES>
+          <root url="jar://$MODULE_DIR$/libs/spigot-1.16.4.jar!/" />
         </CLASSES>
         <JAVADOC />
         <SOURCES />

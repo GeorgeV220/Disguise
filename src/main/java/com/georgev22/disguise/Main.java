@@ -2,7 +2,7 @@ package com.georgev22.disguise;
 
 import com.georgev22.disguise.commands.Disguise;
 import com.georgev22.disguise.commands.Skin;
-import com.georgev22.disguise.handler.SkinUtils;
+import com.georgev22.disguise.utilities.SkinUtils;
 import com.georgev22.disguise.listeners.CustomListeners;
 import com.georgev22.disguise.listeners.LeaveListener;
 import com.georgev22.disguise.listeners.LoginListener;

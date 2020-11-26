@@ -3,7 +3,7 @@ package com.georgev22.disguise.commands;
 import com.georgev22.disguise.Cooldown;
 import com.georgev22.disguise.Main;
 import com.georgev22.disguise.utilities.Utils;
-import com.georgev22.disguise.handler.SkinUtils;
+import com.georgev22.disguise.utilities.SkinUtils;
 import com.georgev22.disguise.manager.NickManager;
 import com.georgev22.disguise.manager.NickUser;
 import com.georgev22.disguise.utilities.MessagesUtil;

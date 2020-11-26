@@ -1,8 +1,8 @@
-package com.georgev22.disguise.handler;
+package com.georgev22.disguise.utilities;
 
 import com.georgev22.disguise.Main;
 import com.georgev22.disguise.ReflectionUtil;
-import com.georgev22.disguise.handler.handlers.*;
+import com.georgev22.disguise.handler.SkinHandler;
 import com.google.common.collect.Maps;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
@@ -24,54 +24,24 @@ import java.util.Map;
 public class SkinUtils {
 
     public static Map<String, JsonObject> cache = Maps.newHashMap();
-    private static SkinHandler skinHandler;
+    private static SkinHandler skinHandler = null;
     private static JsonObject textureProperty;
 
-    public static void initialize() {
-        switch (ReflectionUtil.getVersion()) {
-            case "v1_8_R3":
-                skinHandler = new SkinHandler1_8();
-                break;
-            case "v1_9_R1":
-                skinHandler = new SkinHandler1_9_R1();
-                break;
-            case "v1_9_R2":
-                skinHandler = new SkinHandler1_9_R2();
-                break;
-            case "v1_10_R1":
-                skinHandler = new SkinHandler1_10_R1();
-                break;
-            case "v1_1v1_R1":
-                skinHandler = new SkinHandler1_11_R1();
-                break;
-            case "v1_12_R1":
-                skinHandler = new SkinHandler1_12_R1();
-                break;
-            case "v1_13_R1":
-                skinHandler = new SkinHandler1_13_R1();
-                break;
-            case "v1_13_R2":
-                skinHandler = new SkinHandler1_13_R2();
-                break;
-            case "v1_14_R1":
-                skinHandler = new SkinHandler1_14_R1();
-                break;
-            case "v1_15_R1":
-                skinHandler = new SkinHandler1_15_R1();
-                break;
-            case "v1_16_R1":
-                skinHandler = new SkinHandler1_16_R1();
-                break;
-            case "v1_16_R2":
-                skinHandler = new SkinHandler1_16_R2();
-                break;
-            default:
-                throw new IllegalStateException("Version " + ReflectionUtil.getVersion() + " is not supported!");
+    public static SkinHandler initialize() {
+        try {
+            skinHandler = (SkinHandler) Class.forName("com.georgev22.disguise.handler.handlers.SkinHandler_" + ReflectionUtil.getVersion()).newInstance();
+            Bukkit.getLogger().info("[Disguise] Using skin handler: " + skinHandler.getClass().getName());
+            return skinHandler;
+        } catch (ClassNotFoundException | IllegalAccessException | InstantiationException e) {
+            Bukkit.getLogger().warning("[Disguise] Version " + ReflectionUtil.getVersion() + " is not supported or something bad happened." +
+                    "\nPlease report this error to https://github.com/GeorgeV220/Disguise/issues");
+            e.printStackTrace();
+            return null;
         }
     }
 
     public static SkinHandler getSkinHandler() {
-        return skinHandler;
+        return skinHandler != null ? skinHandler : initialize();
     }
 
     public static void updateData(Player player) {

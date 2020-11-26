@@ -96,88 +96,101 @@
             <scope>provided</scope>
         </dependency>
         <dependency>
+            <groupId>com.comphenix.protocol</groupId>
+            <artifactId>ProtocolLib</artifactId>
+            <version>4.5.0</version>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
             <groupId>net.minecraft.server</groupId>
             <artifactId>v1_8_R3</artifactId>
             <version>${project.version}</version>
             <scope>system</scope>
-            <systemPath>${project.basedir}/libs/spigot.jar</systemPath>
+            <systemPath>${pom.basedir}/libs/spigot.jar</systemPath>
         </dependency>
         <dependency>
             <groupId>net.minecraft.server</groupId>
             <artifactId>v1_9_R1</artifactId>
             <version>${project.version}</version>
             <scope>system</scope>
-            <systemPath>${project.basedir}/libs/spigot-1.9.2.jar</systemPath>
+            <systemPath>${pom.basedir}/libs/spigot-1.9.2.jar</systemPath>
         </dependency>
         <dependency>
             <groupId>net.minecraft.server</groupId>
             <artifactId>v1_9_R2</artifactId>
             <version>${project.version}</version>
             <scope>system</scope>
-            <systemPath>${project.basedir}/libs/spigot-1.9.4.jar</systemPath>
+            <systemPath>${pom.basedir}/libs/spigot-1.9.4.jar</systemPath>
         </dependency>
         <dependency>
             <groupId>net.minecraft.server</groupId>
             <artifactId>v1_10_R1</artifactId>
             <version>${project.version}</version>
             <scope>system</scope>
-            <systemPath>${project.basedir}/libs/spigot-1.10.2.jar</systemPath>
+            <systemPath>${pom.basedir}/libs/spigot-1.10.2.jar</systemPath>
         </dependency>
         <dependency>
             <groupId>net.minecraft.server</groupId>
             <artifactId>v1_11_R1</artifactId>
             <version>${project.version}</version>
             <scope>system</scope>
-            <systemPath>${project.basedir}/libs/spigot-1.11.jar</systemPath>
+            <systemPath>${pom.basedir}/libs/spigot-1.11.jar</systemPath>
         </dependency>
         <dependency>
             <groupId>net.minecraft.server</groupId>
             <artifactId>v1_12_R1</artifactId>
             <version>${project.version}</version>
             <scope>system</scope>
-            <systemPath>${project.basedir}/libs/spigot-1.12.2.jar</systemPath>
+            <systemPath>${pom.basedir}/libs/spigot-1.12.2.jar</systemPath>
         </dependency>
         <dependency>
             <groupId>net.minecraft.server</groupId>
             <artifactId>v1_13_R1</artifactId>
             <version>${project.version}</version>
             <scope>system</scope>
-            <systemPath>${project.basedir}/libs/spigot-1.13.jar</systemPath>
+            <systemPath>${pom.basedir}/libs/spigot-1.13.jar</systemPath>
         </dependency>
         <dependency>
             <groupId>net.minecraft.server</groupId>
             <artifactId>v1_13_R2</artifactId>
             <version>${project.version}</version>
             <scope>system</scope>
-            <systemPath>${project.basedir}/libs/spigot-1.13.2.jar</systemPath>
+            <systemPath>${pom.basedir}/libs/spigot-1.13.2.jar</systemPath>
         </dependency>
         <dependency>
             <groupId>net.minecraft.server</groupId>
             <artifactId>v1_14_R1</artifactId>
             <version>${project.version}</version>
             <scope>system</scope>
-            <systemPath>${project.basedir}/libs/spigot-1.14.jar</systemPath>
+            <systemPath>${pom.basedir}/libs/spigot-1.14.jar</systemPath>
         </dependency>
         <dependency>
             <groupId>net.minecraft.server</groupId>
             <artifactId>v1_15_R1</artifactId>
             <version>${project.version}</version>
             <scope>system</scope>
-            <systemPath>${project.basedir}/libs/spigot-1.15.jar</systemPath>
+            <systemPath>${pom.basedir}/libs/spigot-1.15.jar</systemPath>
         </dependency>
         <dependency>
             <groupId>net.minecraft.server</groupId>
             <artifactId>v1_16_R1</artifactId>
             <version>${project.version}</version>
             <scope>system</scope>
-            <systemPath>${project.basedir}/libs/spigot-1.16.1.jar</systemPath>
+            <systemPath>${pom.basedir}/libs/spigot-1.16.1.jar</systemPath>
         </dependency>
         <dependency>
             <groupId>net.minecraft.server</groupId>
             <artifactId>v1_16_R2</artifactId>
             <version>${project.version}</version>
             <scope>system</scope>
-            <systemPath>${project.basedir}/libs/spigot-1.16.3.jar</systemPath>
+            <systemPath>${pom.basedir}/libs/spigot-1.16.3.jar</systemPath>
+        </dependency>
+        <dependency>
+            <groupId>net.minecraft.server</groupId>
+            <artifactId>v1_16_R3</artifactId>
+            <version>${project.version}</version>
+            <scope>system</scope>
+            <systemPath>${pom.basedir}/libs/spigot-1.16.4.jar</systemPath>
         </dependency>
     </dependencies>
 </project>

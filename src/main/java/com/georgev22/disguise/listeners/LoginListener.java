@@ -1,7 +1,7 @@
 package com.georgev22.disguise.listeners;
 
 import com.georgev22.disguise.Main;
-import com.georgev22.disguise.handler.SkinUtils;
+import com.georgev22.disguise.utilities.SkinUtils;
 import com.georgev22.disguise.manager.SkinManager;
 import com.georgev22.disguise.manager.SkinUser;
 import org.bukkit.event.EventHandler;
