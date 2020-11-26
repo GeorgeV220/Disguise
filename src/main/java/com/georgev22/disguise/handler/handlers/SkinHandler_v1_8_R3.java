@@ -1,16 +1,15 @@
 package com.georgev22.disguise.handler.handlers;
 
 import com.georgev22.disguise.Main;
-import com.georgev22.disguise.utilities.Utils;
 import com.georgev22.disguise.handler.SkinHandler;
 import com.georgev22.disguise.utilities.SkinUtils;
+import com.georgev22.disguise.utilities.Utils;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import com.mojang.authlib.properties.Property;
 import com.mojang.authlib.properties.PropertyMap;
 import net.minecraft.server.v1_8_R3.*;
 import org.bukkit.Bukkit;
-import org.bukkit.Location;
 import org.bukkit.craftbukkit.v1_8_R3.entity.CraftPlayer;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
@@ -65,18 +64,6 @@ public class SkinHandler_v1_8_R3 implements SkinHandler {
             ep.updateAbilities();
             SkinUtils.updateData(player);
         });
-    }
-
-    public void reloadSkin(Player player) {
-        final EntityPlayer ep = ((CraftPlayer) player).getHandle();
-        final PacketPlayOutPlayerInfo removeInfo = new PacketPlayOutPlayerInfo(PacketPlayOutPlayerInfo.EnumPlayerInfoAction.REMOVE_PLAYER, ep);
-        final PacketPlayOutPlayerInfo addInfo = new PacketPlayOutPlayerInfo(PacketPlayOutPlayerInfo.EnumPlayerInfoAction.ADD_PLAYER, ep);
-        final Location loc = player.getLocation().clone();
-        ep.playerConnection.sendPacket(removeInfo);
-        ep.playerConnection.sendPacket(addInfo);
-        player.teleport(loc);
-        ep.playerConnection.sendPacket(new PacketPlayOutRespawn(ep.dimension, ep.getWorld().getDifficulty(), ep.getWorld().getWorldData().getType(), ep.playerInteractManager.getGameMode()));
-        player.updateInventory();
     }
 
     @Override

@@ -1,14 +1,10 @@
 package com.georgev22.disguise.utilities;
 
 import com.georgev22.disguise.Main;
-import com.georgev22.disguise.ReflectionUtil;
 import com.google.common.collect.Lists;
 import com.google.common.primitives.Doubles;
 import com.google.common.primitives.Ints;
 import com.google.common.primitives.Longs;
-import net.md_5.bungee.api.chat.BaseComponent;
-import net.md_5.bungee.api.chat.HoverEvent;
-import net.md_5.bungee.api.chat.TextComponent;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.Validate;
 import org.bukkit.Bukkit;
@@ -22,16 +18,13 @@ import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.potion.PotionEffectType;
 
 import java.io.BufferedReader;
-import java.io.IOException;
 import java.io.InputStreamReader;
 import java.lang.reflect.Field;
-import java.lang.reflect.Method;
 import java.net.URL;
 import java.text.NumberFormat;
 import java.util.*;
 import java.util.Map.Entry;
 import java.util.concurrent.TimeUnit;
-import java.util.logging.Level;
 import java.util.stream.Collectors;
 
 public final class Utils {
@@ -40,9 +33,10 @@ public final class Utils {
         throw new AssertionError();
     }
 
+    public static String getVersion() {
+        return Bukkit.getServer().getClass().getPackage().getName().substring(Bukkit.getServer().getClass().getPackage().getName().lastIndexOf('.') + 1);
+    }
 
-    public static List<Player> deathList = Lists.newArrayList();
-    public static List<Player> opList = new ArrayList<>();
 
     public static String convertSeconds(long input, String secondInput, String secondsInput, String minuteInput,
                                         String minutesInput, String hourInput, String hoursInput, String dayInput, String daysInput,
@@ -475,46 +469,6 @@ public final class Utils {
         return copy;
     }
 
-    public static String convertItemStackToJson(ItemStack itemStack) throws Exception {
-
-        Class<?> craftItemStackClazz = ReflectionUtil.getOBCClass("inventory.CraftItemStack");
-        Method asNMSCopyMethod = ReflectionUtil.getMethod(craftItemStackClazz, "asNMSCopy", ItemStack.class);
-
-        Class<?> nmsItemStackClazz = ReflectionUtil.getNMSClass("ItemStack");
-        Class<?> nbtTagCompoundClazz = ReflectionUtil.getNMSClass("NBTTagCompound");
-        Method saveNmsItemStackMethod = ReflectionUtil.getMethod(nmsItemStackClazz, "save", nbtTagCompoundClazz);
-
-        Object nmsNbtTagCompoundObj;
-        Object nmsItemStackObj;
-        Object itemAsJsonObject;
-
-        try {
-            nmsNbtTagCompoundObj = nbtTagCompoundClazz.newInstance();
-            nmsItemStackObj = Objects.requireNonNull(asNMSCopyMethod).invoke(null, itemStack);
-            itemAsJsonObject = Objects.requireNonNull(saveNmsItemStackMethod).invoke(nmsItemStackObj, nmsNbtTagCompoundObj);
-        } catch (Throwable t) {
-            Bukkit.getLogger().log(Level.SEVERE, "failed to serialize itemstack to nms item", t);
-            return null;
-        }
-
-        return itemAsJsonObject.toString();
-    }
-
-    public static void sendItemTooltipMessage(Player player, String message, String text, ItemStack item) throws Exception {
-        String itemJson = convertItemStackToJson(item);
-
-        BaseComponent[] hoverEventComponents = new BaseComponent[]{new TextComponent(itemJson)};
-
-        HoverEvent event = new HoverEvent(HoverEvent.Action.SHOW_ITEM, hoverEventComponents);
-
-        TextComponent component = new TextComponent(text);
-        component.setHoverEvent(event);
-
-        TextComponent msg = new TextComponent(message);
-        msg.addExtra(component);
-        player.spigot().sendMessage(msg);
-    }
-
     public static void removeItem(ItemStack item, Iterator<ItemStack> itemsx, Material Item, String displayName) {
         if ((item != null) && (item.getType() == Item) && (item.hasItemMeta()) && (item.getItemMeta().hasDisplayName())
                 && (item.getItemMeta().getDisplayName().equals(Utils.colorize(displayName)))) {
@@ -537,83 +491,13 @@ public final class Utils {
                 player.getLocation().getBlock().getType() != Material.VINE;
     }
 
-    public static List<Player> getDeathList() {
-        return deathList;
-    }
-
-    public static List<Player> getOpList() {
-        return opList;
-    }
-
-    public static void setDeathList(List<Player> deathList) {
-        Utils.deathList = deathList;
-    }
-
-    public static void setOpList(List<Player> opList) {
-        Utils.opList = opList;
-    }
-
-    /*
-    public static void changeName(String name, Player player) {
-        try {
-            Method getHandle = player.getClass().getMethod("getHandle",
-                    (Class<?>[]) null);
-            try {
-                Class.forName("com.mojang.authlib.GameProfile");
-            } catch (ClassNotFoundException e) {
-                Bukkit.broadcastMessage("CHANGE NAME METHOD DOES NOT WORK IN 1.7 OR LOWER!");
-                return;
-            }
-            Object profile = getHandle.invoke(player).getClass()
-                    .getMethod("getProfile")
-                    .invoke(getHandle.invoke(player));
-            Field ff = profile.getClass().getDeclaredField("name");
-            ff.setAccessible(true);
-            ff.set(profile, name);
-
-            for (Player players : Bukkit.getOnlinePlayers()) {
-                players.hidePlayer(player);
-                players.showPlayer(player);
-            }
-
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
-        (CraftPlayer craftPlayer = ((CraftPlayer) player);
-        GameProfile profile = new GameProfile(player.getUniqueId(), name);
-        EntityLiving entityLiving = craftPlayer.getHandle();
-        craftPlayer.getHandle().playerConnection.sendPacket(new PacketPlayOutPlayerInfo(PacketPlayOutPlayerInfo.EnumPlayerInfoAction.REMOVE_PLAYER, craftPlayer.getHandle()));
-        try {
-            Field gp2 = entityLiving.getClass().getSuperclass().getDeclaredField("bT");
-            gp2.setAccessible(true);
-            gp2.set(entityLiving, profile);
-            gp2.setAccessible(false);
-        } catch (Exception e) {
-            e.printStackTrace();
-            return;
-        }
-        Bukkit.getOnlinePlayers().stream().filter(p -> p.getUniqueId() != player.getUniqueId()).forEach(p -> {
-            try {
-                sendPacket(p, new PacketPlayOutEntityDestroy(player.getEntityId()));
-                sendPacket(p, new PacketPlayOutNamedEntitySpawn(craftPlayer.getHandle()));
-                Bukkit.getServer().getScheduler().runTask(Main.getInstance(), () -> p.hidePlayer(player));
-                Bukkit.getServer().getScheduler().runTaskLater(Main.getInstance(), () -> p.showPlayer(player), 5);
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        });
-
-    }*/
-
     /**
      * Check if a user is premium
      *
      * @param username player name
      * @return boolean
-     * @throws IOException
      */
-    public static boolean isUsernamePremium(String username) throws IOException {
+    public static boolean isUsernamePremium(String username) {
         try {
             URL url = new URL("https://api.mojang.com/users/profiles/minecraft/" + username);
             BufferedReader in = new BufferedReader(new InputStreamReader(url.openStream()));
@@ -628,28 +512,6 @@ public final class Utils {
         }
 
         return false;
-    }
-
-    /**
-     * Get player ping
-     *
-     * @param player Player
-     * @return Integer
-     */
-    public static int getPlayerPing(Player player) {
-        try {
-            int ping;
-            Class<?> craftPlayer = Class.forName("org.bukkit.craftbukkit." + ReflectionUtil.getVersion() + ".entity.CraftPlayer");
-            Object converted = craftPlayer.cast(player);
-            Method handle = converted.getClass().getMethod("getHandle");
-            Object entityPlayer = handle.invoke(converted);
-            Field pingField = entityPlayer.getClass().getField("ping");
-            ping = pingField.getInt(entityPlayer);
-            return ping;
-        } catch (Exception e) {
-            e.printStackTrace();
-            return 0;
-        }
     }
 
     /**

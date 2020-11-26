@@ -3,10 +3,10 @@ package com.georgev22.disguise.commands;
 import com.georgev22.disguise.Cooldown;
 import com.georgev22.disguise.Main;
 import com.georgev22.disguise.events.SkinEvent;
-import com.georgev22.disguise.utilities.SkinUtils;
 import com.georgev22.disguise.manager.SkinManager;
 import com.georgev22.disguise.manager.SkinUser;
 import com.georgev22.disguise.utilities.MessagesUtil;
+import com.georgev22.disguise.utilities.SkinUtils;
 import com.georgev22.disguise.utilities.Utils;
 import com.google.common.collect.Maps;
 import org.bukkit.Bukkit;
@@ -15,7 +15,6 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
-import java.io.IOException;
 import java.util.Map;
 
 /**
@@ -47,13 +46,9 @@ public class Skin implements CommandExecutor {
                 return true;
             }
             Player player = (Player) sender;
-            try {
-                if (!Utils.isUsernamePremium(args[1])) {
-                    MessagesUtil.SKIN_ACCOUNT_DOES_NOT_EXIST.msg(sender);
-                    return true;
-                }
-            } catch (IOException e) {
-                e.printStackTrace();
+            if (!Utils.isUsernamePremium(args[1])) {
+                MessagesUtil.SKIN_ACCOUNT_DOES_NOT_EXIST.msg(sender);
+                return true;
             }
             SkinUser skinUser = SkinManager.getSkinManager().getMap().get(player.getUniqueId());
             if (skinUser == null) {

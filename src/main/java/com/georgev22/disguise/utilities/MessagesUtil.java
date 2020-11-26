@@ -16,7 +16,7 @@ public enum MessagesUtil {
 
     WAIT("Wait", "&ePlease wait &6%seconds%s"),
 
-    DISGUISE_INVALID_USAGE("Disguise.Invalid Usage", "&eInvalid Usage, use &6/disguise set <name> &Eor &6/disguise reset&e or &6/disguise random&e."),
+    DISGUISE_INVALID_USAGE("Disguise.Invalid Usage", "&eInvalid Usage, use &6/disguise set <name> &Eor &6/disguise reset&e or &6/disguise random&e or &6/disguise update&e."),
 
     DISGUISE_INVALID_USAGE_SET("Disguise.Invalid Usage Set", "Invalid usage. /disguise set <player>"),
 
